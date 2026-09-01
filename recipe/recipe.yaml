@@ -1,0 +1,49 @@
+schema_version: 1
+
+context:
+  name: gradientai
+  version: 1.13.1
+
+package:
+  name: ${{ name|lower }}
+  version: ${{ version }}
+
+source:
+  url: https://pypi.org/packages/source/${{ name[0] }}/${{ name }}/gradientai-${{ version }}.tar.gz
+  sha256: 3029955f614cc52e95aef67ff390ec3ac071e4cc3e2f61d47eaa3c4aaf4c3f25
+
+build:
+  number: 2
+  noarch: python
+  script: ${{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+
+requirements:
+  host:
+    - python ${{ python_min }}.*
+    - poetry-core
+    - pip
+  run:
+    - python >=${{ python_min }},<4.0.0
+    - aenum >=3.1.11
+    - pydantic >=1.10.15,<3
+    - python-dateutil >=2.8.2
+    - urllib3 >=1.25.3
+
+tests:
+  - python:
+      imports:
+        - gradientai
+      pip_check: true
+      python_version:
+        - ${{ python_min }}
+        - "*"
+
+about:
+  summary: Gradient AI API
+  license: MIT
+  license_file: LICENSE
+  homepage: https://github.com/Preemo-Inc/gradientai-python-sdk
+
+extra:
+  recipe-maintainers:
+    - jan-janssen
